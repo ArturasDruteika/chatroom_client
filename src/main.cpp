@@ -9,6 +9,7 @@
 
 #define PORT 8080
 
+
 void error(const char *msg)
 {
     perror(msg);
@@ -38,7 +39,7 @@ void client_connect()
     serv_addr.sin_port = htons(portno);
 
     if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
-    error("ERROR connecting");
+        error("ERROR connecting");
 
     printf("Please enter the message: ");
     bzero(buffer, 256);
@@ -63,20 +64,10 @@ void client_connect()
 }
 
 
-void test_server()
-{
-    int serverSockFd;
-    struct sockaddr_in serverAddr;
-
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_addr.s_addr;
-}
-
-
 int main(int argc, char *argv[])
 {
 
-    start_server();
+    client_connect();
 
     return 0;
 }
