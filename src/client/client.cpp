@@ -6,6 +6,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
+#include "../../headers/client/client.h"
 #include "../../headers/utils/utils.h"
 
 
@@ -15,7 +16,7 @@
 
 void client_connect()
 {
-    int sockfd, n;
+    int sockfd, response;
 
     struct sockaddr_in serv_addr{};
     struct hostent *serverAddr;
@@ -41,6 +42,13 @@ void client_connect()
     if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
         error("ERROR connecting");
 
+    response = read(sockfd, buffer, 255);
+
+    if (response < 0)
+        error("ERROR reading from socket");
+
+    printf("%s\n", buffer);
+
     int i = 0;
 
     while (true)
@@ -48,15 +56,15 @@ void client_connect()
         printf("Please enter the message: ");
         bzero(buffer, 256);
         fgets(buffer, 255, stdin);
-        n = write(sockfd, buffer, strlen(buffer));
+        response = write(sockfd, buffer, strlen(buffer));
 
-        if (n < 0)
+        if (response < 0)
             error("ERROR writing to socket");
 
         bzero(buffer, 256);
-        n = read(sockfd, buffer, 255);
+        response = read(sockfd, buffer, 255);
 
-        if (n < 0)
+        if (response < 0)
             error("ERROR reading from socket");
 
         printf("%s\n", buffer);
